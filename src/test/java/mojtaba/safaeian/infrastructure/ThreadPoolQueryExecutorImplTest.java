@@ -42,7 +42,7 @@ public class ThreadPoolQueryExecutorImplTest {
 
     @Before
     public void setup() {
-        threadPoolQueryExecutor = new ThreadPoolQueryExecutorImpl(new MockRemoteQueryRepositoryImpl(), trackingService);
+        threadPoolQueryExecutor = new ThreadPoolQueryExecutorImpl(new MockRemoteQueryRepositoryImpl(), trackingService, 10);
     }
 
     @Test

@@ -9,6 +9,7 @@ import mojtaba.safaeian.domain.chart.QueryRepository;
 import mojtaba.safaeian.domain.chart.ResultSet;
 import mojtaba.safaeian.domain.tracking.TrackEventType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -23,19 +24,21 @@ import java.util.stream.Collectors;
 @Component
 public class ThreadPoolQueryExecutorImpl implements QueryExecutor {
 
-    private static final int THREAD_NUMBER = 5;
     private static final int QUERY_EXECUTION_TIMEOUT_MILLISECONDS = 2000;
 
-    private ExecutorService executorService = Executors.newFixedThreadPool(THREAD_NUMBER);
+    private ExecutorService executorService;
 
     private final QueryRepository queryRepository;
 
     private final TrackingService trackingService;
 
     @Autowired
-    public ThreadPoolQueryExecutorImpl(QueryRepository queryRepository, TrackingService trackingService) {
+    public ThreadPoolQueryExecutorImpl(QueryRepository queryRepository,
+                                       TrackingService trackingService,
+                                       @Value("${query.executor.threads}") Integer threadNumber) {
         this.queryRepository = queryRepository;
         this.trackingService = trackingService;
+        executorService = Executors.newFixedThreadPool(threadNumber);
     }
 
 
